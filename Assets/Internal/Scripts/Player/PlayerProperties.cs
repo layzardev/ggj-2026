@@ -17,6 +17,7 @@ public class PlayerProperties : MonoBehaviour
     public int PlayerLevel => _playerLevel;
     public float PlayerSpeed => _playerSpeed;
     public float PlayerJumpHeight => _playerJumpHeight;
+    public bool disableAcceleration = false;
 
     PlayerInput _playerInput;
 

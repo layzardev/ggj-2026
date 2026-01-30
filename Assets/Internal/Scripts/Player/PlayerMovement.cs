@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     PlayerProperties playerProperties;
 
     [Header("Movement")]
-    [SerializeField] float moveSpeed = 6f;
+    float moveSpeed = 1f;
     [SerializeField] float gravity = -9.81f;
 
     [Header("Look")]
@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
     float verticalVelocity; //
     float xRotation;
+    
 
     void Awake()
     {
@@ -57,16 +58,24 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleMovement()
     {
-        Vector3 move =
+        Vector3 move;
+        if (!playerProperties.disableAcceleration) {
+            move =
             transform.right * moveInput.x +
             transform.forward * moveInput.y;
+        } else
+        {
+            move =
+            transform.right * moveInput.x;
+        }
+
 
         if (controller.isGrounded && verticalVelocity < 0)
             verticalVelocity = -2f;
 
         verticalVelocity += gravity * Time.deltaTime;
 
-        Vector3 velocity = move * moveSpeed;
+        Vector3 velocity = move * moveSpeed * playerProperties.PlayerSpeed;
         velocity.y = verticalVelocity;
 
         controller.Move(velocity * Time.deltaTime);

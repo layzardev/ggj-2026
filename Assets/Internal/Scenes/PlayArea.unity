@@ -380,7 +380,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.546, z: 0}
   m_LocalScale: {x: 2.3255813, y: 2.3255813, z: 2.3255813}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1534754990}
   m_Father: {fileID: 1533132809}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1017393655
@@ -485,11 +486,11 @@ GameObject:
   - component: {fileID: 1533132809}
   - component: {fileID: 1533132808}
   - component: {fileID: 1533132807}
-  - component: {fileID: 1533132806}
   - component: {fileID: 1533132811}
   - component: {fileID: 1533132810}
   - component: {fileID: 1533132812}
   - component: {fileID: 1533132813}
+  - component: {fileID: 1533132814}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -497,29 +498,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!136 &1533132806
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1533132805}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1533132807
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -591,7 +569,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 494385749}
-  - {fileID: 1534754990}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1533132810
@@ -786,6 +763,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1533132814}
+        m_TargetAssemblyTypeName: PlayerSlide, Assembly-CSharp
+        m_MethodName: OnSlide
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fa78a1b1-e07f-4349-afb9-cbc22ebe8f65
+    m_ActionName: 'Player/Slide[/Keyboard/shift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -803,10 +796,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2c11a70509cef4c82a6d1c1a990d3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 6
   gravity: -9.81
   mouseSensitivity: 2
   cameraTransform: {fileID: 494385749}
+--- !u!114 &1533132814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533132805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22cce57af3244404093987fdabb6c448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSlide
+  speedAddition: 0.5
+  slideDuration: 1
+  slideCooldown: 0
+  colliderHeight: 1
 --- !u!1 &1534754986
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,11 +917,11 @@ Transform:
   m_GameObject: {fileID: 1534754986}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 0.209, z: 1.02}
-  m_LocalScale: {x: 0.46511626, y: 0.46511626, z: 0.46511626}
+  m_LocalPosition: {x: 0.2408, y: -0.14491004, z: 0.4386001}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1533132809}
+  m_Father: {fileID: 494385749}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2085800537
 GameObject:
@@ -1022,8 +1030,8 @@ Transform:
   m_GameObject: {fileID: 2085800537}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.3839, y: -0, z: 16.1961}
+  m_LocalScale: {x: 2.2961884, y: 1, z: 4.2392}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
