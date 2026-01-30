@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerProperties : MonoBehaviour
+public class PlayerProperties : Singleton<PlayerProperties>
 {
     [SerializeField] int _playerHealth = 100;
     [SerializeField] int _playerScore = 0;
@@ -10,27 +10,16 @@ public class PlayerProperties : MonoBehaviour
     [SerializeField] float _playerJumpHeight = 1;
 
     [SerializeField] WeaponProperties _weapon;
-
-
     public int PlayerHealth => _playerHealth;
     public int PlayerScore => _playerScore;
     public int PlayerLevel => _playerLevel;
     public float PlayerSpeed => _playerSpeed;
+    public WeaponProperties PlayerWeapon => _weapon;
     public float PlayerJumpHeight => _playerJumpHeight;
     public bool disableAcceleration = false;
+    public bool isAttacking = false;
 
     PlayerInput _playerInput;
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void TakeDamage(int value)
     {

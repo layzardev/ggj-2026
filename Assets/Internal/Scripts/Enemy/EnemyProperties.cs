@@ -6,19 +6,26 @@ public abstract class EnemyProperties : MonoBehaviour
     [SerializeField] float _enemySpeed = 1;
     [SerializeField] int _enemyDamage = 10;
 
-
+    GameObject target;
     public int EnemyDamage => _enemyDamage;
     void Start()
     {
-        
+        target = PlayerProperties.Instance.gameObject;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        transform.LookAt(target.transform);
     }
 
+    public void TakeDamage()
+    {
+        _enemyHealth--;
+        if (_enemyHealth <= 0)
+        {
+            EnemyDeath();
+        }
+    }
     void EnemyDeath()
     {
         Destroy(gameObject);

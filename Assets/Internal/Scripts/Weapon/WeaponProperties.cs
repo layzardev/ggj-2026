@@ -4,22 +4,16 @@ public class WeaponProperties : MonoBehaviour
 {
     [SerializeField] int _weaponDamage = 1;
     [SerializeField] int _maxBullet = 12;
-    [SerializeField] int _currentBullet;
+    [SerializeField] int _currentBulletAmount;
     [SerializeField] float _reloadTime = 1.5f;
     [SerializeField] float _shootRate = 0.5f;
-
+    [SerializeField] public GameObject _bulletPrefab;
     public int WeaponDamage => _weaponDamage;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public virtual void ShootWeapon()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("Shooting Projectile Weapon");
+        GameObject bullet = Instantiate(_bulletPrefab, transform.position, transform.rotation);
+        bullet.GetComponent<PlayerProjectile>().InitializeProjectile(this,this.transform.forward);
     }
 
 }

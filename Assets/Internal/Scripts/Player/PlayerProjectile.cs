@@ -1,23 +1,30 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerProjectile : MonoBehaviour
 {
-    int _projectileDamage;
-    WeaponProperties _parentWeapon;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] float speed = 30f;
+    [SerializeField] float lifeTime = 3f;
+
+    int projectileDamage;
+    Rigidbody rb;
+
+    void Awake()
     {
-        _projectileDamage = _parentWeapon != null ? _parentWeapon.WeaponDamage : 0;
+        rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void InitializeProjectile(WeaponProperties parentWeapon, Vector3 direction)
     {
+        projectileDamage = parentWeapon.WeaponDamage;
 
+        rb.linearVelocity = direction.normalized * speed;
+
+        Destroy(gameObject, lifeTime);
     }
 
     public int GetProjectileDamage()
     {
-        return _projectileDamage;
+        return projectileDamage;
     }
 }

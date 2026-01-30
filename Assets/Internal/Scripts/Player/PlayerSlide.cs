@@ -24,7 +24,7 @@ public class PlayerSlide : MonoBehaviour
 
     public void OnSlide(InputAction.CallbackContext ctx)
     {
-        if (!isSliding && ctx.performed)
+        if (!isSliding && controller.isGrounded && ctx.performed)
         {
             StartCoroutine(SlideCoroutine());
         }
