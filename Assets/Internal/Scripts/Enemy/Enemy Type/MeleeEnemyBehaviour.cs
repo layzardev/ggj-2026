@@ -6,6 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 public class MeleeEnemyBehaviour : EnemyProperties
 {
     [SerializeField] float _attackDelay = 2f;
+    
 
     Vector2 _playerDirection;
     float _step;
@@ -32,6 +33,7 @@ public class MeleeEnemyBehaviour : EnemyProperties
     
     private void Attack()
     {
+        
         PlayerProperties.Instance.TakeDamage(_enemyDamage);
     }
 
@@ -42,6 +44,7 @@ public class MeleeEnemyBehaviour : EnemyProperties
             yield return new WaitForSeconds(_attackDelay);
             if (_isColliding)
             {
+                _attackAnimator.SetTrigger("Attack");
                 Attack();
             }
            

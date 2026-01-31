@@ -20,4 +20,13 @@ public class EnemyProjectile : MonoBehaviour
     {
         return _projectileDamage;
     }
+
+    public void InitializeProjectile(EnemyProperties parentEnemy, Vector3 direction)
+    {
+        _parentEnemy = parentEnemy;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        float projectileSpeed = 10f;
+        rb.linearVelocity = direction.normalized * projectileSpeed;
+        Destroy(gameObject, 5f); // Destroy the projectile after 5 seconds to avoid clutter
+    }
 }
