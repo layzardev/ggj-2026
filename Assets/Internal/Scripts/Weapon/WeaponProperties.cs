@@ -13,6 +13,8 @@ public class WeaponProperties : MonoBehaviour
     public int WeaponDamage => _weaponDamage;
     public event Action<int, int> OnAmmoChanged;
 
+    bool _isReloading = false;
+
     private void Start()
     {
         _currentBulletAmount = _maxBullet;
@@ -20,7 +22,12 @@ public class WeaponProperties : MonoBehaviour
     }
     public virtual void ShootWeapon()
     {
-        if (_currentBulletAmount <= 0)
+        if (_isReloading)
+        {
+            Debug.Log("Currently Reloading...");
+            return;
+        }
+        if (_currentBulletAmount <= 0 )
         {
             Debug.Log("Out of Ammo, Reload!");
             StartCoroutine(ReloadWeapon());
@@ -31,13 +38,28 @@ public class WeaponProperties : MonoBehaviour
 
     }
 
-    protected IEnumerator ReloadWeapon()
+    public void InitiateReload()
     {
+
+        StartCoroutine(ReloadWeapon());
+        // Add animations or sound effects here
+    }
+
+    public IEnumerator ReloadWeapon()
+    {
+        PlayerProperties.Instance.notificationText.gameObject.SetActive(true);
+        PlayerProperties.Instance.notificationText.SetText("Reloading...");
+
         Debug.Log("Reloading Weapon");
+        _isReloading = true;
         //insert reloading anim here
         yield return new WaitForSeconds(_reloadTime);
         _currentBulletAmount = _maxBullet;
         OnAmmoChanged?.Invoke(_currentBulletAmount, _maxBullet);
+        _isReloading = false;
+
+        PlayerProperties.Instance.notificationText.gameObject.SetActive(false);
+        PlayerProperties.Instance.notificationText.SetText("");
     }
 
 }

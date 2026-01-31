@@ -39,11 +39,12 @@ public class MeleeEnemyBehaviour : EnemyProperties
     {
         while (true)
         {
+            yield return new WaitForSeconds(_attackDelay);
             if (_isColliding)
             {
                 Attack();
             }
-            yield return new WaitForSeconds(_attackDelay);
+           
         }
     }
 

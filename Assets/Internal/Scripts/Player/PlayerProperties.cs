@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,8 @@ public class PlayerProperties : Singleton<PlayerProperties>
     public bool disableAcceleration = false;
     public bool isAttacking = false;
     public bool isSliding = false;
+
+    public TextMeshProUGUI notificationText;
 
     PlayerInput _playerInput;
 
