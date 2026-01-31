@@ -178,9 +178,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469079a73efe7d7469bed2f6a82bb210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemyBehaviour
-  _enemyHealth: 5
+  _enemyHealth: 3
   _enemySpeed: 1
-  _enemyDamage: 10
+  _enemyDamage: 3
   _attackDelay: 2
 --- !u!65 &1224480321180854882
 BoxCollider:

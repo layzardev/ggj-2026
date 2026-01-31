@@ -13,9 +13,18 @@ public class PlayerUI : MonoBehaviour
     private TextMeshProUGUI ammoText;
     [SerializeField] 
     private TextMeshProUGUI scoreText;
+    [SerializeField]
+    private TextMeshProUGUI enemyCounterText;
+    [SerializeField]
+    private TextMeshProUGUI targetCounterText;
+
+    public GameObject PauseMenu;
+    //[SerializeField]
+    //private TextMeshProUGUI comboText;
 
     PlayerProperties player;
     WeaponProperties weapon;
+    [SerializeField] GameManager gameManager;
 
     private void Awake()
     {
@@ -25,34 +34,67 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
+        
         // Initialize health bar and text
         if (player != null && healthBar != null)
         {
-            healthBar.maxValue = player.PlayerHealth; // set max
+            healthBar.maxValue = player.MaxPlayerHealth; // set max
             healthBar.value = player.PlayerHealth;    // current value
             healthText.text = $"HP: {player.PlayerHealth}";
+
+            if (GameManager.Instance != null)
+            {
+                enemyCounterText.text = "0";
+                targetCounterText.text = gameManager.TargetEnemiesThisWave.ToString();
+            }
         }
     }
-    
+
     private void OnEnable()
     {
         if (player != null)
+        {
             player.OnHealthChanged += UpdateHealth;
             player.OnScoreChanged += UpdateScore;
+            player.OnMaxHealthChanged += UpdateMaxHealth;
+        }
 
         if (weapon != null)
+        {
             weapon.OnAmmoChanged += UpdateAmmo;
+        }
+
+        if (gameManager != null)
+        {
+            gameManager.OnEnemyDeath += UpdateEnemyCounter;
+            gameManager.OnTargetChanged += UpdateTargetCounter;
+            gameManager.OnPause += TogglePauseUI;
+            
+        }
     }
 
     private void OnDisable()
     {
         if (player != null)
+        {
             player.OnHealthChanged -= UpdateHealth;
             player.OnScoreChanged -= UpdateScore;
+            player.OnMaxHealthChanged -= UpdateMaxHealth;
+        }
 
         if (weapon != null)
+        {
             weapon.OnAmmoChanged -= UpdateAmmo;
+        }
+
+        if (gameManager != null)
+        {
+            gameManager.OnEnemyDeath -= UpdateEnemyCounter;
+            gameManager.OnTargetChanged -= UpdateTargetCounter;
+            gameManager.OnPause -= TogglePauseUI;
+        }
     }
+
 
     void UpdateHealth(int value)
     {
@@ -73,4 +115,33 @@ public class PlayerUI : MonoBehaviour
         if (scoreText != null)
             scoreText.text = $"Score: {score}";
     }
+
+    private void UpdateEnemyCounter()
+    {
+        if (enemyCounterText != null)
+            //Debug.Log("Updating enemy counter text. " + gameManager._enemiesKilled.ToString() + " " + gameManager._enemiesKilled);
+            enemyCounterText.text = gameManager.EnemiesKilled.ToString();
+    }
+
+    private void UpdateTargetCounter()
+    {
+        if (targetCounterText != null)
+            targetCounterText.text = gameManager.TargetEnemiesThisWave.ToString();
+    }
+
+    private void UpdateMaxHealth(int value)
+    {
+        if (healthBar != null)
+            healthBar.maxValue = value;
+    }
+
+    private void TogglePauseUI()
+    {
+        if (PauseMenu != null)
+        {
+            PauseMenu.SetActive(!PauseMenu.activeSelf);
+        }
+    }
+
+
 }

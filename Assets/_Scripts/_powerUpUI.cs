@@ -15,16 +15,16 @@ public class _powerUpUI : MonoBehaviour
         gameObject.SetActive(true);
 
         onSkipCallback = onSkip;
-
+        Debug.Log("Checking");
         foreach (Transform child in cardParent)
             Destroy(child.gameObject);
-
+        Debug.Log("Showing power-up UI with " + cards.Count + " cards.");
         foreach (var card in cards)
         {
             var btn = Instantiate(cardPrefab, cardParent);
             btn.Setup(card, onSelect);
         }
-
+        Debug.Log("Showing power-up UI after instantiating with " + cards.Count + " cards.");
         if (skipButton != null)
         {
             skipButton.gameObject.SetActive(true);

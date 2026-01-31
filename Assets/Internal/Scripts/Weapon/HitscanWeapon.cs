@@ -8,10 +8,8 @@ public class HitscanWeapon : WeaponProperties
     [SerializeField] Transform muzzleTransform;
     [SerializeField] GameObject trailPrefab;
     [SerializeField] GameObject _hitMarker;
-
-    [Header("Stats")]
     [SerializeField] float range = 100f;
-    [SerializeField] int damage = 10;
+
 
     public override void ShootWeapon()
     {

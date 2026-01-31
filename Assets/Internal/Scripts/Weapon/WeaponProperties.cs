@@ -17,6 +17,13 @@ public class WeaponProperties : MonoBehaviour
 
     protected float _delayTimer = 0;
 
+
+    public void ModifyDamage(int amount)
+    {
+               _weaponDamage += amount;
+    }
+
+
     private void Start()
     {
         _currentBulletAmount = _maxBullet;

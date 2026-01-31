@@ -1,18 +1,23 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerProperties : Singleton<PlayerProperties>
 {
-    [SerializeField] int _playerHealth = 100;
+    [SerializeField] int _maxPlayerHealth = 10;
+    [SerializeField] int _playerHealth;
+
     [SerializeField] int _playerScore = 0;
     [SerializeField] int _playerLevel = 1;
     [SerializeField] float _playerSpeed = 1;
     [SerializeField] float _playerJumpHeight = 1;
 
     [SerializeField] WeaponProperties _weapon;
+
+    public int MaxPlayerHealth => _maxPlayerHealth;
     public int PlayerHealth => _playerHealth;
     public int PlayerScore => _playerScore;
     public int PlayerLevel => _playerLevel;
@@ -31,6 +36,14 @@ public class PlayerProperties : Singleton<PlayerProperties>
     public event Action<int> OnHealthChanged;
     public event Action<int> OnScoreChanged;
     public event Action<int> OnLevelChanged;
+
+    public event Action<int> OnMaxHealthChanged;
+
+    void Start()
+    {
+        
+        _playerHealth = _maxPlayerHealth;
+    }
 
     public void TakeDamage(int value)
     {
@@ -93,7 +106,30 @@ public class PlayerProperties : Singleton<PlayerProperties>
         }
     }
 
-    
+    public void ApplyPowerUp(_powerUpCard card)
+    {
+        switch (card.rarity)
+        {
+            case _cardRarity.Common:
+                _weapon.ModifyDamage(2);
+                _maxPlayerHealth += 5;
+                break;
+
+            case _cardRarity.Advanced:
+                _weapon.ModifyDamage(4);
+                _maxPlayerHealth += 7;
+                break;
+
+            case _cardRarity.Legend:
+                _weapon.ModifyDamage(8);
+                _maxPlayerHealth += 10;
+                break;
+        }
+        OnMaxHealthChanged?.Invoke(_maxPlayerHealth);
+
+
+    }
+
 }
 
 

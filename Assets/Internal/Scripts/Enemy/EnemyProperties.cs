@@ -5,6 +5,7 @@ public abstract class EnemyProperties : MonoBehaviour
     [SerializeField] protected int _enemyHealth = 1;
     [SerializeField] protected float _enemySpeed = 1;
     [SerializeField] protected int _enemyDamage = 10;
+    [SerializeField] protected int _expDrop = 1;
 
     protected GameObject target;
     public int EnemyDamage => _enemyDamage;
@@ -26,8 +27,12 @@ public abstract class EnemyProperties : MonoBehaviour
             EnemyDeath();
         }
     }
-    void EnemyDeath()
+    public void EnemyDeath()
     {
+        GameManager.Instance?.ModifyEnemyCount(1);
+        GameManager.Instance?.OnEnemyDeath?.Invoke();
+       
+        PlayerProperties.Instance?.ModifyScore(_expDrop);
         Destroy(gameObject);
     }
 

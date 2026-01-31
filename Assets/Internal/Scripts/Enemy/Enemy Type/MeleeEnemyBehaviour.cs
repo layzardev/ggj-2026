@@ -5,7 +5,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class MeleeEnemyBehaviour : EnemyProperties
 {
-    [SerializeField] float _attackDelay = 2f;
+    [SerializeField] float _attackDelay = 1f;
     
 
     Vector2 _playerDirection;

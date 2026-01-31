@@ -55,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsPaused) return;
         HandleLook();
         HandleMovement();
     }
