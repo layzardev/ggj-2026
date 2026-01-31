@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,10 +11,12 @@ public class WeaponProperties : MonoBehaviour
     [SerializeField] float _shootRate = 0.5f;
     
     public int WeaponDamage => _weaponDamage;
+    public event Action<int, int> OnAmmoChanged;
 
     private void Start()
     {
         _currentBulletAmount = _maxBullet;
+        OnAmmoChanged?.Invoke(_currentBulletAmount, _maxBullet);
     }
     public virtual void ShootWeapon()
     {
@@ -24,6 +27,8 @@ public class WeaponProperties : MonoBehaviour
             return;
         }
         _currentBulletAmount--;
+        OnAmmoChanged?.Invoke(_currentBulletAmount, _maxBullet);
+
     }
 
     protected IEnumerator ReloadWeapon()
@@ -32,6 +37,7 @@ public class WeaponProperties : MonoBehaviour
         //insert reloading anim here
         yield return new WaitForSeconds(_reloadTime);
         _currentBulletAmount = _maxBullet;
+        OnAmmoChanged?.Invoke(_currentBulletAmount, _maxBullet);
     }
 
 }

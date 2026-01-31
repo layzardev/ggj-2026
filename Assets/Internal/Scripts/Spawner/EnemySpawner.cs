@@ -47,24 +47,10 @@ public class EnemySpawner : MonoBehaviour
             Transform spawnPoint = GetValidSpawnPoint();
             if (spawnPoint == null) 
                 return;
-            Vector3 spawnPosition = GetGroundedPosition(spawnPoint.position);
 
             Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
         }
     }
-
-    private Vector3 GetGroundedPosition(Vector3 spawnPos)
-    {
-        Ray ray = new Ray(spawnPos + Vector3.up * 1f, Vector3.down);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 2f, LayerMask.GetMask("Ground")))
-        {
-            return hit.point;
-        }
-
-        return spawnPos;
-    }
-
 
     private Transform GetValidSpawnPoint()
     {
