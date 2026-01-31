@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HitscanWeapon : WeaponProperties
@@ -6,6 +7,7 @@ public class HitscanWeapon : WeaponProperties
     [SerializeField] Transform cameraTransform;
     [SerializeField] Transform muzzleTransform;
     [SerializeField] GameObject trailPrefab;
+    [SerializeField] GameObject _hitMarker;
 
     [Header("Stats")]
     [SerializeField] float range = 100f;
@@ -26,11 +28,28 @@ public class HitscanWeapon : WeaponProperties
             Debug.Log("Hit: " + hit.collider.name);
             hitPoint = hit.point;
 
-            if (hit.collider.TryGetComponent<EnemyProperties>(out var enemy))
+            if (hit.collider.TryGetComponent<EnemyBodyPart>(out var enemyPart) )
             {
-                Debug.Log("Hit enemy: " + enemy.name);
-                enemy.TakeDamage();
+                
+                if (enemyPart.bodyPartType == BodyPartType.Weakspot)
+                {
+                    StartCoroutine(ActivateMarker(0.25f));
+                    Debug.Log("Critical hit: " + enemyPart.enemyProperties.name);
+                    enemyPart.enemyProperties.TakeDamage(2*WeaponDamage);
+                } else 
+                {
+                    Debug.Log("Normal hit: " + enemyPart.enemyProperties.name);
+                    enemyPart.enemyProperties.TakeDamage(WeaponDamage);
+                }
+                    
             }
         }
+    }
+
+    IEnumerator ActivateMarker(float length)
+    {
+        _hitMarker.SetActive(true);
+        yield return new WaitForSeconds(length);
+        _hitMarker.SetActive(false);
     }
 }
