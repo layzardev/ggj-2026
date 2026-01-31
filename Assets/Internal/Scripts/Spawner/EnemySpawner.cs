@@ -10,19 +10,24 @@ public class EnemySpawner : MonoBehaviour
     private SpawnerContainer spawnerContainer;
 
     [Header("Spawn Settings")]
-    public float spawnDelay = 3f;
-    public int enemiesPerWave = 1;
+    public float initialSpawnDelay = 3f;
+    public int initialSpawn = 2;
+    public float spawnModifier = 1f;
 
     [Header("Player Check")]
     public Transform player;
     public float minSpawnDistanceFromPlayer = 10f;
 
     private Coroutine spawnRoutine;
-    private int levelUpCount;
+    private int levelUpCount = 1;
+    private float currentSpawnDelay;
+    private int currentSpawnCount; // How many spawn at a time
 
     private void Start()
     {
         StartSpawner();
+        currentSpawnDelay = initialSpawnDelay;
+        currentSpawnCount = initialSpawn;
     }
 
     private void StartSpawner()
@@ -32,7 +37,7 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnLoop()
     {
-        yield return new WaitForSeconds(spawnDelay);
+        yield return new WaitForSeconds(currentSpawnDelay);
 
         SpawnEnemies();
 
@@ -42,11 +47,11 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        for (int i = 0; i < enemiesPerWave; i++)
+        for (int i = 0; i < currentSpawnCount; i++)
         {
             Transform spawnPoint = GetValidSpawnPoint();
             if (spawnPoint == null) 
-                return;
+                break;
 
             Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
         }
@@ -73,12 +78,7 @@ public class EnemySpawner : MonoBehaviour
     public void OnLevelUpTriggered()
     {
         levelUpCount++;
-
-        if (levelUpCount >= 4)
-        {
-            levelUpCount = 0;
-            RestartSpawnerWithUpdatedValues();
-        }
+        RestartSpawnerWithUpdatedValues();
     }
 
     private void RestartSpawnerWithUpdatedValues()
@@ -86,10 +86,28 @@ public class EnemySpawner : MonoBehaviour
         if (spawnRoutine != null)
             StopCoroutine(spawnRoutine);
 
-        // Example scaling – tweak freely
-        spawnDelay = Mathf.Max(0.5f, spawnDelay - 0.3f);
-        enemiesPerWave++;
-
+        UpdateWaveSettings(levelUpCount);
         StartSpawner();
+    }
+
+    private void UpdateWaveSettings(int level){
+        float modifier = 1f;
+        int step = (level-2) % 5; // cycle through pola 2-5
+        switch(step) {
+            case 0:
+                spawnModifier += 0.2f;
+                break;
+            case 1:
+                spawnModifier += 0.1f;
+                break;
+            case 2:
+                spawnModifier += 0.2f;
+                break;
+            case 3:
+                spawnModifier -= 0.4f;
+                currentSpawnCount++;
+                break;
+        }
+        currentSpawnDelay = initialSpawnDelay / spawnModifier;
     }
 }
