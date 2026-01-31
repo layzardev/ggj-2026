@@ -24,10 +24,14 @@ public class PlayerProperties : Singleton<PlayerProperties>
     PlayerInput _playerInput;
 
     public Action OnJump;
+    public event Action<int> OnHealthChanged;
+    public event Action<int> OnScoreChanged;
+    public event Action<int> OnLevelChanged;
 
     public void TakeDamage(int value)
     {
         _playerHealth -= value;
+        OnHealthChanged?.Invoke(_playerHealth);
         if (_playerHealth <= 0)
         {
             PlayerDeath();
@@ -43,16 +47,19 @@ public class PlayerProperties : Singleton<PlayerProperties>
     public void ModifyScore(int value)
     {
         _playerScore += value;
+        OnScoreChanged?.Invoke(_playerScore);
     }
 
     public void ModifyHealth(int value)
     {
         _playerHealth += value;
+        OnHealthChanged?.Invoke(_playerHealth);
     }
 
     public void ModifyLevel(int value)
     {
         _playerLevel += value;
+        OnLevelChanged?.Invoke(_playerLevel);
     }
 
     public void ModifySpeed(float value)
@@ -65,6 +72,7 @@ public class PlayerProperties : Singleton<PlayerProperties>
         if (other.CompareTag("EnemyProjectile"))
         {
             _playerHealth -= other.GetComponent<EnemyProjectile>().GetProjectileDamage();
+            OnHealthChanged?.Invoke(_playerHealth);
             if (_playerHealth <= 0)
             {
                 PlayerDeath();

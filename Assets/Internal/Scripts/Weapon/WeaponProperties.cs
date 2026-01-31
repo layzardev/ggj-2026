@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,10 +11,12 @@ public class WeaponProperties : MonoBehaviour
     [SerializeField] float _shootRate = 0.5f;
     [SerializeField]  GameObject _bulletPrefab;
     public int WeaponDamage => _weaponDamage;
+    public event Action<int, int> OnAmmoChanged;
 
     private void Start()
     {
         _currentBulletAmount = _maxBullet;
+        OnAmmoChanged?.Invoke(_currentBulletAmount, _maxBullet);
     }
     public virtual void ShootWeapon()
     {
@@ -24,6 +27,7 @@ public class WeaponProperties : MonoBehaviour
             return;
         }
         _currentBulletAmount--;
+        OnAmmoChanged?.Invoke(_currentBulletAmount, _maxBullet);
         Debug.Log("Shooting Projectile Weapon");
         GameObject bullet = Instantiate(_bulletPrefab, transform.position, transform.rotation);
         bullet.GetComponent<PlayerProjectile>().InitializeProjectile(this,this.transform.forward);
@@ -35,6 +39,7 @@ public class WeaponProperties : MonoBehaviour
         //insert reloading anim here
         yield return new WaitForSeconds(_reloadTime);
         _currentBulletAmount = _maxBullet;
+        OnAmmoChanged?.Invoke(_currentBulletAmount, _maxBullet);
     }
 
 }
