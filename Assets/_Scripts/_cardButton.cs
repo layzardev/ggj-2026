@@ -8,6 +8,7 @@ public class _cardButton : MonoBehaviour
 {
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text desc;
+    [SerializeField] private Image cardImage;
 
     private _powerUpCard card;
     private Action<_powerUpCard> onClick;
@@ -35,6 +36,9 @@ public class _cardButton : MonoBehaviour
 
         if (desc != null)
             desc.text = c.description;
+
+        if (cardImage != null && c.cardImage != null)
+            cardImage.sprite = c.cardImage;
     }
 
     private void HandleClick()

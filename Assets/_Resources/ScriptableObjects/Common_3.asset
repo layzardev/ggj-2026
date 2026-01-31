@@ -10,7 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b85a840eb03ccab459504c04300c35e7, type: 3}
-  m_Name: DamageUp
+  m_Name: Common_3
   m_EditorClassIdentifier: Assembly-CSharp::PowerUpCard
-  cardName: Damage Boost
-  description: Increase damage massively
+  cardImage: {fileID: 21300000, guid: dee7844a2ede4f74caed7fab70437ff0, type: 3}
+  cardName: C
+  description: Attack speed increases rapidly
+  rarity: 0
+  damage: 0
+  maxHealth: 0
+  fireRate: 20
+  magSize: 0
+  reloadTime: 0
+  movementSpeed: 0
+  recoil: 0
