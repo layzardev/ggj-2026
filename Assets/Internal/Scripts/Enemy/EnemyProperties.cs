@@ -18,9 +18,9 @@ public abstract class EnemyProperties : MonoBehaviour
         transform.LookAt(target.transform);
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int value = 1)
     {
-        _enemyHealth--;
+        _enemyHealth -= value;
         if (_enemyHealth <= 0)
         {
             EnemyDeath();

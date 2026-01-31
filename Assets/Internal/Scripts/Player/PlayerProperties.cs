@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +23,8 @@ public class PlayerProperties : Singleton<PlayerProperties>
     public bool isAttacking = false;
     public bool isSliding = false;
 
+    public TextMeshProUGUI notificationText;
+
     PlayerInput _playerInput;
 
     public Action OnJump;
@@ -37,6 +41,15 @@ public class PlayerProperties : Singleton<PlayerProperties>
             PlayerDeath();
             GameManager.Instance.OnPlayerDeath?.Invoke();
         }
+        StartCoroutine(ShowNotification("Took " + value + " damage!", 2f));
+    }
+
+    public IEnumerator ShowNotification(string message, float duration)
+    {
+        notificationText.SetText(message);
+        notificationText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        notificationText.gameObject.SetActive(false);
     }
     void PlayerDeath()
     {
