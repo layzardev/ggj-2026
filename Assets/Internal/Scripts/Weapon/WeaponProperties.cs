@@ -8,7 +8,7 @@ public class WeaponProperties : MonoBehaviour
     [SerializeField] protected int _currentBulletAmount;
     [SerializeField] float _reloadTime = 1.5f;
     [SerializeField] float _shootRate = 0.5f;
-    [SerializeField]  GameObject _bulletPrefab;
+    
     public int WeaponDamage => _weaponDamage;
 
     private void Start()
@@ -24,9 +24,6 @@ public class WeaponProperties : MonoBehaviour
             return;
         }
         _currentBulletAmount--;
-        Debug.Log("Shooting Projectile Weapon");
-        GameObject bullet = Instantiate(_bulletPrefab, transform.position, transform.rotation);
-        bullet.GetComponent<PlayerProjectile>().InitializeProjectile(this,this.transform.forward);
     }
 
     protected IEnumerator ReloadWeapon()
