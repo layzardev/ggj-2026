@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,8 +19,11 @@ public class PlayerProperties : Singleton<PlayerProperties>
     public float PlayerJumpHeight => _playerJumpHeight;
     public bool disableAcceleration = false;
     public bool isAttacking = false;
+    public bool isSliding = false;
 
     PlayerInput _playerInput;
+
+    public Action OnJump;
 
     public void TakeDamage(int value)
     {
@@ -27,6 +31,7 @@ public class PlayerProperties : Singleton<PlayerProperties>
         if (_playerHealth <= 0)
         {
             PlayerDeath();
+            GameManager.Instance.OnPlayerDeath?.Invoke();
         }
     }
     void PlayerDeath()

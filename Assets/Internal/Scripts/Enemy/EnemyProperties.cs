@@ -2,11 +2,11 @@ using UnityEngine;
 
 public abstract class EnemyProperties : MonoBehaviour
 {
-    [SerializeField] int _enemyHealth = 1;
-    [SerializeField] float _enemySpeed = 1;
-    [SerializeField] int _enemyDamage = 10;
+    [SerializeField] protected int _enemyHealth = 1;
+    [SerializeField] protected float _enemySpeed = 1;
+    [SerializeField] protected int _enemyDamage = 10;
 
-    GameObject target;
+    protected GameObject target;
     public int EnemyDamage => _enemyDamage;
     void Start()
     {

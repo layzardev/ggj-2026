@@ -19,6 +19,14 @@ public class HitscanWeapon : WeaponProperties
 
         Vector3 hitPoint = origin + direction * range;
 
+        if (_currentBulletAmount <= 0)
+        {
+            Debug.Log("Out of Ammo, Reload!");
+            StartCoroutine(ReloadWeapon());
+            return;
+        }
+        _currentBulletAmount--;
+
         if (Physics.Raycast(origin, direction, out RaycastHit hit, range))
         {
             Debug.Log("Hit: " + hit.collider.name);

@@ -5,7 +5,15 @@ public class GameManager : Singleton<GameManager>
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     float _timeElapsed;
-    float _existingEnemies;
+    float _initialRoundTime;
+    
+    int _existingEnemies;
+    int _totalEnemiesCurrentRound;
+
+    int _enemiesKilled;
+    int _wavesCompleted;
+
+
 
     public Action OnPlayerDeath;
     public Action OnEnemyDeath;
@@ -31,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     void HandleEnemyDeath()
     {
         _existingEnemies--;
+        _enemiesKilled++;
         Debug.Log("An enemy has died. Remaining enemies: " + _existingEnemies);
     }
 

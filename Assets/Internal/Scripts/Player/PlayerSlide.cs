@@ -7,7 +7,7 @@ public class PlayerSlide : MonoBehaviour
     [SerializeField] float speedAddition = 0.5f;
     [SerializeField] float slideDuration = 1.5f;
     [SerializeField] float slideCooldown = 0f;
-    bool isSliding = false;
+
 
     [SerializeField] float colliderHeight = 1.0f;
 
@@ -22,20 +22,44 @@ public class PlayerSlide : MonoBehaviour
         playerProperties = GetComponent<PlayerProperties>();
     }
 
+    private void OnEnable()
+    {
+        PlayerProperties.Instance.OnJump += CancelSlide;
+    }
+
+    private void OnDisable()
+    {
+        PlayerProperties.Instance.OnJump -= CancelSlide;
+    }
+
     public void OnSlide(InputAction.CallbackContext ctx)
     {
-        if (!isSliding && controller.isGrounded && ctx.performed)
+        if (!PlayerProperties.Instance.isSliding && controller.isGrounded && ctx.performed)
         {
             StartCoroutine(SlideCoroutine());
         }
     }
 
+    public void CancelSlide() {         
+        if (PlayerProperties.Instance.isSliding)
+        {
+            Debug.Log("Cancelling slide!");
+            StopAllCoroutines();
+            StartCoroutine(ReturnDefaultCollider(2, Vector3.zero, colliderHeight, new Vector3(0f, colliderHeight / 2f, 0f))); // masih hardcode
+            PlayerProperties.Instance.isSliding = false;
+            PlayerProperties.Instance.ModifySpeed(-speedAddition);
+            PlayerProperties.Instance.disableAcceleration = false;
+            controller.height = 2.0f;
+            controller.center = new Vector3(0f, 1.0f, 0f); //masih hardcode
+        }
+    }
+
     IEnumerator SlideCoroutine()
     {
-        
 
-        isSliding = true;
-        playerProperties.disableAcceleration = true;
+
+        PlayerProperties.Instance.isSliding = true;
+        PlayerProperties.Instance.disableAcceleration = true;
         float timer = 0f;
 
         float startHeight = controller.height;
@@ -48,11 +72,11 @@ public class PlayerSlide : MonoBehaviour
             startCenter.z
         );
 
-        playerProperties.ModifySpeed(speedAddition);
+        PlayerProperties.Instance.ModifySpeed(speedAddition);
 
         while (timer < slideDuration / 3f)
         {
-            controller.Move(transform.forward * Time.deltaTime * 2f * (playerProperties.PlayerSpeed + speedAddition));
+            controller.Move(transform.forward * Time.deltaTime * 2f * (PlayerProperties.Instance.PlayerSpeed + speedAddition));
             timer += Time.deltaTime;
             float t = timer / (slideDuration / 3f);
 
@@ -65,18 +89,27 @@ public class PlayerSlide : MonoBehaviour
         timer = 0f;
         while (timer < slideDuration / 3f)
         {
-            controller.Move(transform.forward * Time.deltaTime * 2f * (playerProperties.PlayerSpeed + speedAddition));
+            controller.Move(transform.forward * Time.deltaTime * 2f * (PlayerProperties.Instance.PlayerSpeed + speedAddition));
             timer += Time.deltaTime;
             float t = timer / (slideDuration / 3f);
 
             yield return null;
         }
 
+        StartCoroutine(ReturnDefaultCollider(startHeight, startCenter, targetHeight, targetCenter));
 
-        timer = 0f;
+        PlayerProperties.Instance.ModifySpeed(-speedAddition);
+        PlayerProperties.Instance.disableAcceleration = false;
+        PlayerProperties.Instance.isSliding = false;
+    }
+
+    IEnumerator ReturnDefaultCollider(float startHeight,Vector3 startCenter, float targetHeight, Vector3 targetCenter)
+    {
+
+        float timer = 0f;
         while (timer < slideDuration / 3f)
         {
-            controller.Move(transform.forward * Time.deltaTime * 2f * (playerProperties.PlayerSpeed + speedAddition));
+            Debug.Log("Returning collider to normal");
             timer += Time.deltaTime;
             float t = timer / (slideDuration / 3f);
 
@@ -85,10 +118,7 @@ public class PlayerSlide : MonoBehaviour
 
             yield return null;
         }
-
-        playerProperties.ModifySpeed(-speedAddition);
-        playerProperties.disableAcceleration = false;
-        isSliding = false;
+        
     }
 
 }

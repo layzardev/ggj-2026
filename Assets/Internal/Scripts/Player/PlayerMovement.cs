@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerProperties))]
 public class PlayerMovement : MonoBehaviour
 {
-    PlayerProperties playerProperties;
+    //PlayerProperties playerProperties;
 
     [Header("Movement")]
     float moveSpeed = 1f;
@@ -19,23 +19,26 @@ public class PlayerMovement : MonoBehaviour
     Vector2 moveInput;
     Vector2 lookInput;
 
-    float verticalVelocity; //
+    float verticalVelocity; 
     float xRotation;
     
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        playerProperties = GetComponent<PlayerProperties>();
+       
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     public void OnJump(InputAction.CallbackContext ctx)
     {
-        if (controller.isGrounded && ctx.performed)
+        Debug.Log("is controller grounded? "+controller.isGrounded);
+        if ((controller.isGrounded || PlayerProperties.Instance.isSliding)&& ctx.performed)
         {
-            verticalVelocity = Mathf.Sqrt(-2f * gravity * 1.5f * playerProperties.PlayerJumpHeight); 
+            PlayerProperties.Instance.OnJump?.Invoke();
+            Debug.Log("Jumped!");
+            verticalVelocity = Mathf.Sqrt(-2f * gravity * 1.5f * PlayerProperties.Instance.PlayerJumpHeight); 
         }
     }
 
@@ -59,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     void HandleMovement()
     {
         Vector3 move;
-        if (!playerProperties.disableAcceleration) {
+        if (!PlayerProperties.Instance.disableAcceleration) {
             move =
             transform.right * moveInput.x +
             transform.forward * moveInput.y;
@@ -75,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
         verticalVelocity += gravity * Time.deltaTime;
 
-        Vector3 velocity = move * moveSpeed * playerProperties.PlayerSpeed;
+        Vector3 velocity = move * moveSpeed * PlayerProperties.Instance.PlayerSpeed;
         velocity.y = verticalVelocity;
 
         controller.Move(velocity * Time.deltaTime);
