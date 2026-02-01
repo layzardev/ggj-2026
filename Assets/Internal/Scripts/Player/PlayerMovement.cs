@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
     float verticalVelocity; 
     float xRotation;
+    AudioSource footstepSource;
+    bool footstepPlaying;
     
 
     void Awake()
@@ -29,6 +31,11 @@ public class PlayerMovement : MonoBehaviour
        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    void Start()
+    {
+        footstepSource = AudioManager.Instance.GetSFXSource("FootstepSFX");
     }
 
     public void OnJump(InputAction.CallbackContext ctx)
@@ -61,6 +68,26 @@ public class PlayerMovement : MonoBehaviour
         HandleMovement();
     }
 
+    void HandleFootstep(){
+        bool isMoving = moveInput.sqrMagnitude > 0.01f;
+        bool grounded = controller.isGrounded;
+
+        if (grounded && isMoving)
+        {
+            if (!footstepSource.isPlaying)
+            {
+                AudioManager.Instance.PlaySFX("FootstepSFX", true);
+            }
+        }
+        else
+        {
+            if (footstepSource.isPlaying)
+            {
+                footstepSource.Stop();
+            }
+        }
+    }
+
     void HandleMovement()
     {
         Vector3 move;
@@ -84,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
         velocity.y = verticalVelocity;
 
         controller.Move(velocity * Time.deltaTime);
+        HandleFootstep();
     }
 
     void HandleLook()

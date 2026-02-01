@@ -25,6 +25,11 @@ public abstract class EnemyProperties : MonoBehaviour
         if (_enemyHealth <= 0)
         {
             EnemyDeath();
+            AudioManager.Instance.PlaySFX("HeadshotSFX");
+        }
+        else
+        {
+            AudioManager.Instance.PlaySFX("WoodCrackSFX");
         }
     }
     public void EnemyDeath()

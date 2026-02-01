@@ -99,4 +99,18 @@ public class AudioManager : Singleton<AudioManager>
             currentMusic = null;
         }
     }
+
+    public AudioSource GetSFXSource(string sfxName)
+    {
+        return sfxMap[sfxName];
+    }
+
+    public void StopSFX(string sfxName)
+    {
+        if (sfxMap.TryGetValue(sfxName, out AudioSource source))
+        {
+            source.Stop();
+        }
+    }
+
 }
