@@ -51,7 +51,6 @@ public class PlayerProperties : Singleton<PlayerProperties>
         OnHealthChanged?.Invoke(_playerHealth);
         if (_playerHealth <= 0)
         {
-            PlayerDeath();
             GameManager.Instance.OnPlayerDeath?.Invoke();
         }
         StartCoroutine(ShowNotification("Took " + value + " damage!", 2f));
@@ -64,11 +63,7 @@ public class PlayerProperties : Singleton<PlayerProperties>
         yield return new WaitForSeconds(duration);
         notificationText.gameObject.SetActive(false);
     }
-    void PlayerDeath()
-    {
 
-        Destroy(gameObject);
-    }
 
     public void ModifyScore(int value)
     {
@@ -101,7 +96,7 @@ public class PlayerProperties : Singleton<PlayerProperties>
             OnHealthChanged?.Invoke(_playerHealth);
             if (_playerHealth <= 0)
             {
-                PlayerDeath();
+                GameManager.Instance.OnPlayerDeath?.Invoke();
             }
         }
     }

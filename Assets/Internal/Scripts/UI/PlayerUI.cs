@@ -17,6 +17,12 @@ public class PlayerUI : MonoBehaviour
     private TextMeshProUGUI enemyCounterText;
     [SerializeField]
     private TextMeshProUGUI targetCounterText;
+    [SerializeField]
+    private GameObject EndScreen;
+    [SerializeField]
+    private TextMeshProUGUI EndScore;
+    [SerializeField]
+    private TextMeshProUGUI EndKill;
 
     public GameObject PauseMenu;
     //[SerializeField]
@@ -69,6 +75,7 @@ public class PlayerUI : MonoBehaviour
             gameManager.OnEnemyDeath += UpdateEnemyCounter;
             gameManager.OnTargetChanged += UpdateTargetCounter;
             gameManager.OnPause += TogglePauseUI;
+            gameManager.OnPlayerDeath += ShowEndScreen;
             
         }
     }
@@ -92,6 +99,7 @@ public class PlayerUI : MonoBehaviour
             gameManager.OnEnemyDeath -= UpdateEnemyCounter;
             gameManager.OnTargetChanged -= UpdateTargetCounter;
             gameManager.OnPause -= TogglePauseUI;
+            gameManager.OnPlayerDeath -= ShowEndScreen;
         }
     }
 
@@ -135,11 +143,27 @@ public class PlayerUI : MonoBehaviour
             healthBar.maxValue = value;
     }
 
-    private void TogglePauseUI()
+    public void TogglePauseUI()
     {
         if (PauseMenu != null)
         {
             PauseMenu.SetActive(!PauseMenu.activeSelf);
+        }
+    }
+
+    private void ShowEndScreen()
+    {
+        if (EndScreen != null)
+        {
+            EndScreen.SetActive(true);
+            if (EndScore != null)
+            {
+                EndScore.text = $"Final Score: {player.PlayerScore}";
+            }
+            if (EndKill != null)
+            {
+                EndKill.text = $"Total Enemies Defeated: {gameManager.EnemiesKilled}";
+            }
         }
     }
 

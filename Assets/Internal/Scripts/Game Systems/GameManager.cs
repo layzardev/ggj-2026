@@ -23,7 +23,9 @@ public class GameManager : Singleton<GameManager>
     public List<_powerUpCard> allCards;
 
     public bool isGameOver = false;
-    public bool IsPaused = false;
+    public bool isPaused = false;
+    public bool isInPowerUpPhase = false;
+
     private _powerUpCard selectedCard;
     private int wave = 1;
     private Coroutine waveRoutine;
@@ -67,6 +69,8 @@ public class GameManager : Singleton<GameManager>
         // Handle game over logic here
         Debug.Log("Player has died. Game Over.");
         isGameOver = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Time.timeScale = 0f;
         
     }
@@ -86,6 +90,7 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator WaveLoop()
     {
+        AudioManager.Instance.PlayMusic("CombatBGM");
         while (true)
         {
             Debug.Log($"Wave {wave} Start");
@@ -113,7 +118,8 @@ public class GameManager : Singleton<GameManager>
     {
         Time.timeScale = 0f;
         //DestroyExistingEnemies(); //tambahan 
-        IsPaused = true;
+        isInPowerUpPhase = true;
+        isPaused = true;
         selectedCard = null;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -128,7 +134,7 @@ public class GameManager : Singleton<GameManager>
             Debug.Log("Selected: " + selectedCard.cardName);
 
         powerUpUI.Hide();
-        IsPaused = false;
+        isPaused = false;
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -161,12 +167,22 @@ public class GameManager : Singleton<GameManager>
         player.ApplyPowerUp(card);
     }
 
-    public void PauseGame()
+    public void TogglePauseGame()
     {
-        IsPaused = true;
-        Time.timeScale = 0f;
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
+        if(isGameOver || isInPowerUpPhase) return;
+
+        if (isPaused)
+        {             // Unpause the game
+            Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        } else
+        {
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        isPaused = !isPaused;
         OnPause?.Invoke();
     }
 
@@ -201,6 +217,12 @@ public class GameManager : Singleton<GameManager>
         }
 
         return result;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
 

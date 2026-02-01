@@ -9,16 +9,17 @@ public class HitscanWeapon : WeaponProperties
     [SerializeField] GameObject trailPrefab;
     [SerializeField] GameObject _hitMarker;
     [SerializeField] float range = 100f;
-
+    [SerializeField] Animator _weaponAnimator;
 
     public override void ShootWeapon()
     {
+        
         Debug.Log("Shooting Hitscan Weapon");
         Vector3 origin = cameraTransform.position;
         Vector3 direction = cameraTransform.forward;
 
         Vector3 hitPoint = origin + direction * range;
-
+        //AudioManager.Instance.PlaySound();
 
         if (_delayTimer >= 0) return;
 
@@ -35,7 +36,7 @@ public class HitscanWeapon : WeaponProperties
         }
 
         base.ShootWeapon();
-
+        _weaponAnimator.SetTrigger("Shoot");
         if (Physics.Raycast(origin, direction, out RaycastHit hit, range))
         {
             Debug.Log("Hit: " + hit.collider.name);
