@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.Random;
 using System.Collections.Generic;
 
 public class AudioManager : Singleton<AudioManager>
@@ -12,6 +13,11 @@ public class AudioManager : Singleton<AudioManager>
     {
         base.Awake();
         CacheAudioSources();
+    }
+
+    private void Start()
+    {
+        PlayMusic("BallroomBGM");
     }
 
     private void CacheAudioSources()
@@ -51,10 +57,12 @@ public class AudioManager : Singleton<AudioManager>
 
     // ===================== SFX =====================
 
-    public void PlaySFX(string sfxName)
+    public void PlaySFX(string sfxName, bool randomizePitch = false)
     {
         if (sfxMap.TryGetValue(sfxName, out AudioSource source))
         {
+            if (randomizePitch)
+                source.pitch = Random.Range(0.8f, 1.2f);
             source.Play();
         }
         else
