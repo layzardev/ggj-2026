@@ -43,6 +43,7 @@ public class WeaponProperties : MonoBehaviour
         _delayTimer = _shootDelay;
         _currentBulletAmount--;
         OnAmmoChanged?.Invoke(_currentBulletAmount, _maxBullet);
+        AudioManager.Instance.PlaySFX("GunshotSFX");
         return;
 
     }

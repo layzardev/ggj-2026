@@ -117,6 +117,7 @@ public class GameManager : Singleton<GameManager>
     private IEnumerator PowerUpPhase()
     {
         Time.timeScale = 0f;
+        AudioManager.Instance.PlaySFX("LevelUpSFX");
         //DestroyExistingEnemies(); //tambahan 
         isInPowerUpPhase = true;
         isPaused = true;
