@@ -25,6 +25,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
+        if (PlayerProperties.Instance != null)
+            player = PlayerProperties.Instance.transform;
         StartSpawner();
         currentSpawnDelay = initialSpawnDelay;
         currentSpawnCount = initialSpawn;

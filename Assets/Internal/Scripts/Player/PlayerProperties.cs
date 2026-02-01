@@ -12,7 +12,7 @@ public class PlayerProperties : Singleton<PlayerProperties>
 
     [SerializeField] int _playerScore = 0;
     [SerializeField] int _playerLevel = 1;
-    [SerializeField] float _playerSpeed = 1;
+    [SerializeField] float _playerSpeed = 3;
     [SerializeField] float _playerJumpHeight = 1;
 
     [SerializeField] WeaponProperties _weapon;
@@ -41,8 +41,23 @@ public class PlayerProperties : Singleton<PlayerProperties>
 
     void Start()
     {
-        
+
+        PlayerInit();
+    }
+
+    public void Update()
+    {
+        Debug.Log("Something+"+Time.realtimeSinceStartup);
+    }
+
+    public void PlayerInit()
+    {
+        _maxPlayerHealth = 10;
         _playerHealth = _maxPlayerHealth;
+        _playerScore = 0;
+        _playerLevel = 1;
+        _playerSpeed = 3;
+        _playerJumpHeight = 1;
     }
 
     public void TakeDamage(int value)

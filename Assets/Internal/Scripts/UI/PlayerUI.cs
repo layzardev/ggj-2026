@@ -34,7 +34,11 @@ public class PlayerUI : MonoBehaviour
 
     private void Awake()
     {
-        player = GetComponentInParent<PlayerProperties>();
+        if (gameManager == null)
+        {
+            gameManager = GameManager.Instance;
+        }
+        player = PlayerProperties.Instance;
         weapon = player.PlayerWeapon;
     }
 
@@ -48,7 +52,7 @@ public class PlayerUI : MonoBehaviour
             healthBar.value = player.PlayerHealth;    // current value
             healthText.text = $"HP: {player.PlayerHealth}";
 
-            if (GameManager.Instance != null)
+            if (gameManager != null)
             {
                 enemyCounterText.text = "0";
                 targetCounterText.text = gameManager.TargetEnemiesThisWave.ToString();

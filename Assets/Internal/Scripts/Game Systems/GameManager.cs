@@ -140,14 +140,14 @@ public class GameManager : Singleton<GameManager>
         Cursor.visible = false;
     }
 
-    public void DestroyExistingEnemies()
-    {
-        EnemyProperties[] enemies = FindObjectsOfType<EnemyProperties>();
-        foreach (EnemyProperties enemy in enemies)
-        {
-            enemy.EnemyDeath(); 
-        }
-    }
+    //public void DestroyExistingEnemies()
+    //{
+    //    EnemyProperties[] enemies = FindObjectsOfType<EnemyProperties>();
+    //    foreach (EnemyProperties enemy in enemies)
+    //    {
+    //        enemy.EnemyDeath(); 
+    //    }
+    //}
 
     private void SkipCard()
     {
@@ -222,8 +222,19 @@ public class GameManager : Singleton<GameManager>
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        isGameOver = false;
+        isPaused = false;
+        isInPowerUpPhase = false;
+        player.PlayerInit();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Playtest_NEW");
     }
+
+    public void Quit()
+    {
+        Time.timeScale = 1f;
+        //UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        Application.Quit();
+    }   
 
 
 }
