@@ -179,9 +179,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemyBehaviour
   _enemyHealth: 3
-  _enemySpeed: 1
+  _enemySpeed: 2.5
   _enemyDamage: 3
-  _attackDelay: 2
+  _expDrop: 1
+  _attackDelay: 1
 --- !u!65 &1224480321180854882
 BoxCollider:
   m_ObjectHideFlags: 0

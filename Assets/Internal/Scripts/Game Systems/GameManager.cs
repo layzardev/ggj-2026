@@ -66,6 +66,9 @@ public class GameManager : Singleton<GameManager>
     {
         // Handle game over logic here
         Debug.Log("Player has died. Game Over.");
+        isGameOver = true;
+        Time.timeScale = 0f;
+        
     }
 
     //void HandleEnemyDeath()

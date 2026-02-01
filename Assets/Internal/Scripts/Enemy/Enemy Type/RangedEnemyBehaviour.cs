@@ -16,7 +16,7 @@ public class RangedEnemyBehaviour : EnemyProperties
     bool _isColliding;
 
     float _distanceToPlayer;
-    float _attackRange = 10f;
+    [SerializeField] float _attackRange = 5f;
 
     private void Start()
     {
@@ -31,7 +31,8 @@ public class RangedEnemyBehaviour : EnemyProperties
         _step = _enemySpeed * Time.deltaTime;
         if (target == null) return;
         transform.LookAt(target.transform);
-        if (_distanceToPlayer < _attackRange) transform.position = Vector3.MoveTowards(transform.position, target.transform.position, _step);
+        _distanceToPlayer = Vector3.Distance(transform.position, target.transform.position);
+        if (_distanceToPlayer > _attackRange) transform.position = Vector3.MoveTowards(transform.position, target.transform.position, _step);
 
     }
 
